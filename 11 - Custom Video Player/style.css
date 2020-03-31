@@ -160,3 +160,14 @@ input[type=range]::-moz-range-thumb {
   background: #ffc600;
   cursor: pointer;
 }
+
+svg{
+  padding: 5px;
+  flex: none !important;
+  cursor: pointer;
+  color: white;
+}
+
+video::-webkit-media-controls {
+  display:none !important;
+}

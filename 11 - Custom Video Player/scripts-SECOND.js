@@ -6,6 +6,7 @@ let progressFilled = player.querySelector( '.progress__filled' );
 let progress = player.querySelector( '.progress' );
 let volume = player.querySelector( 'input[name="volume"]' );
 let playbackRate = player.querySelector( 'input[name="playbackRate"]' );
+let fullScreen = player.querySelector( '.fullScreen' );
 
 
 
@@ -51,6 +52,22 @@ function handleplaybackRate() {
 }
 
 
+
+/* View in fullscreen */
+function openFullscreen() {
+    if (player.requestFullscreen) {
+        player.requestFullscreen();
+    } else if (player.mozRequestFullScreen) { /* Firefox */
+        player.mozRequestFullScreen();
+    } else if (player.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        player.webkitRequestFullscreen();
+    } else if (player.msRequestFullscreen) { /* IE/Edge */
+        player.msRequestFullscreen();
+    }
+}
+
+
+
 video.addEventListener( 'click', play_toggle );
 video.addEventListener( 'play', updateButton );
 video.addEventListener( 'pause', updateButton );
@@ -64,3 +81,4 @@ progress.addEventListener( 'click', handlePlayback );
 
 volume.addEventListener( 'input', handleVolume );
 playbackRate.addEventListener( 'input', handleplaybackRate );
+fullScreen.addEventListener( 'click', openFullscreen )
