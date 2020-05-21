@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+	// Variable to store key pressed.
+	var key_pressed = [];
+	var to_match = 'wow';
+
+	window.addEventListener( 'keyup', ( e ) => {
+
+		key_pressed.push( e.key );
+
+		if( key_pressed.length > to_match.length ) {
+			key_pressed.splice( 0, 1 );
+		}
+
+		if( key_pressed.join('') == to_match ) {
+			console.log( 'HURRAIIII' );
+			cornify_add();
+		}
+
+		console.log( key_pressed );
+	} );
+</script>
+</body>
+</html>
