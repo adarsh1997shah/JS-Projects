@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+</head>
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+
+<script>
+  	window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+	
+	const recognition = new SpeechRecognition();
+
+	// The lang selected.
+  	recognition.lang = 'en-US';
+	
+	// Whether to display intemediate results after finally displayig the result.
+	recognition.interimResults = true;
+
+
+	// Creating the para element to append the text converted from speech. 
+	let p = document.createElement( 'p' );
+	let words = document.querySelector( '.words' );
+	words.appendChild( p );
+
+
+	// To listen for result such that text translated fron voice.
+	recognition.addEventListener( 'result', ( e ) => {
+
+		let speech_text = Array.from(e.results)
+			.map( result => { return result[0].transcript } )
+			.join('');
+
+		p.textContent = speech_text;
+		console.log( speech_text );
+
+		if( e.results[0].isFinal ) {
+
+			// For opening google chrome.
+			if( speech_text.includes( 'open Google' ) ) {
+			window.open( 'https://www.google.com' );
+			}
+
+			// For opening youtube.
+			if( speech_text.includes( 'open YouTube' ) ) {
+				window.open( 'https://www.youtube.com' );
+			}
+
+			// For seaching anything in google chrome.
+			if( speech_text.match( /search for [\w]/i ) ) {
+				let search = speech_text.slice(10);
+				window.open( `https://www.google.com/search?q=${search}` );
+			}
+
+			// Appending the new para element for the new text.
+			p = document.createElement( 'p' );
+			words.appendChild( p );
+		}
+	} );
+
+	// To start again the voice if the speech stops.
+	recognition.addEventListener('end', recognition.start);
+
+	// For starting the voice recognition.
+	recognition.start();
+
+</script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+    
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+</html>
