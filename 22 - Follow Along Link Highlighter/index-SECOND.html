@@ -26,7 +26,39 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+	// 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+	const links = document.querySelectorAll( 'a' );
+
+	// Creating the hightlight element for link tags.
+	const highlight = document.createElement( 'span' );
+	highlight.classList.add( 'highlight' );
+	document.body.append( highlight );
+
+
+	// Event listener function.
+	function highlighting() {
+		
+		let linkCoord = this.getBoundingClientRect();
+		console.log( linkCoord );
+
+		// Creating own coords.
+		const coords = {
+			height  : linkCoord.height,
+			width   : linkCoord.width,
+			x       : linkCoord.x + window.scrollX,
+			y       : linkCoord.y + window.scrollY
+		}
+
+		// For dynamically adjusting properties of highlight.
+		highlight.style.height = `${coords.height}px`;
+		highlight.style.width = `${coords.width}px`;
+		highlight.style.transform = `translate(${coords.x}px, ${coords.y}px)`;
+	}
+
+	// Adding event listener for each link.
+	links.forEach( ( link ) => {
+		link.addEventListener( 'mouseenter', highlighting );
+	} )
   </script>
 </body>
 </html>
