@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Synthesis</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="voiceinator">
+
+      <h1>The Voiceinator 5000</h1>
+
+      <select name="voice" id="voices">
+        <option value="">Select A Voice</option>
+      </select>
+
+      <label for="rate">Rate:</label>
+      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+      <label for="pitch">Pitch:</label>
+
+      <input name="pitch" type="range" min="0" max="2" step="0.1">
+      <textarea name="text">Hello! I love JavaScript 👍</textarea>
+      <button id="stop">Stop!</button>
+      <button id="speak">Speak</button>
+
+    </div>
+
+<script>
+	const msg = new SpeechSynthesisUtterance();
+	let voices = [];
+	const voicesDropdown = document.querySelector('[name="voice"]');
+	const options = document.querySelectorAll('[type="range"], [name="text"]');
+	const speakButton = document.querySelector('#speak');
+	const stopButton = document.querySelector('#stop');
+
+	console.log( msg );
+
+	msg.text = options[2].value;
+
+
+	// For setting language options.
+	function voice_options() {
+		const voices = this.getVoices();
+
+		voicesDropdown.innerHTML = voices.map( ( voice ) => {
+			return `<option value="${voice.lang}">${voice.name}(${voice.lang})</option>`;
+		} ).join('');
+	}
+
+
+	// Looking for change in what to speak value.
+	function changed() {
+		// To cancel existing speak and start again.
+		speechSynthesis.cancel();
+
+		if( this.name == 'rate' ) {
+			msg.rate = this.value;
+		}
+		else if ( this.name == 'pitch' ) {
+			msg.pitch = this.value;
+		}
+		else {
+			msg.text = this.value;
+		}
+		
+
+		// Speaking as soon as certain option is selected.
+		speechSynthesis.speak( msg );
+	}
+
+
+	// The language seleted.
+	function language_change() {
+		// To cancel existing speak and start again.
+		speechSynthesis.cancel();
+
+		msg.lang = this.value;
+
+		// Speaking as soon as certain option is selected.
+		speechSynthesis.speak( msg );
+	}
+
+
+	// For allowing to speak.
+	function start_voice() {
+		// To cancel existing speak and start again.
+		speechSynthesis.cancel();
+		speechSynthesis.speak( msg );
+	}
+
+
+	// To stop speaking.
+	function stop_voice() {
+		// To cancel existing speak and start again.
+		speechSynthesis.cancel();
+	}
+
+
+	voicesDropdown.addEventListener( 'change', language_change );
+	options.forEach( ( option ) => option.addEventListener( 'change', changed ) );
+	speechSynthesis.addEventListener( 'voiceschanged', voice_options );
+	speakButton.addEventListener( 'click', start_voice );
+	stopButton.addEventListener( 'click', stop_voice );
+
+</script>
+
+</body>
+</html>
